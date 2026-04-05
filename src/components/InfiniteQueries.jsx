@@ -1,12 +1,11 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect } from "react";
-// import { useInView } from "react-intersection-observer";
+import { useInView } from "react-intersection-observer";
 
-const fetchFruits = ({ pageParam }) => {
+const fetchFruits = ({ pageParam = 1 }) => {
   return axios.get(
-    `http://localhost:3000/fruits`,
-    // `http://localhost:3000/fruits/?_limit=10&_page=${pageParam}`,
+    `http://localhost:3000/fruits?_limit=10&_page=${pageParam}`
   );
 };
 
@@ -32,17 +31,17 @@ const InfiniteQueries = () => {
     },
   });
 
-  // const { ref, inView } = useInView();
+  const { ref, inView } = useInView();
 
-  // useEffect(() => {
-  //   if (inView) {
-  //     fetchNextPage();
-  //   }
-  // }, [fetchNextPage, inView]);
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, inView]);
 
-  // if (isLoading) {
-  //   return <h2>Page is Loading...</h2>;
-  // }
+  if (isLoading) {
+    return <h2>Page is Loading...</h2>;
+  }
 
   if (isError) {
     return <h1>{error.message}</h1>;
